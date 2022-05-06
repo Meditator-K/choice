@@ -45,7 +45,21 @@ android {
 
     signingConfigs {
         //keystore文件隐藏
+        release {
+            storeFile file('./kyf.keystore')
+            storePassword "229720"
+            keyAlias "kong"
+            keyPassword "229720"
 
+        }
+        debug {
+
+            storeFile file('./kyf.keystore')
+            storePassword "229720"
+            keyAlias "kong"
+            keyPassword "229720"
+
+        }
     }
 
     buildTypes {

@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:choice/constant/widget_style.dart';
 import 'package:choice/page/add_page.dart';
 import 'package:choice/page/all_page.dart';
+import 'package:choice/page/paint_test_page.dart';
+import 'package:choice/page/tilt_list_page.dart';
 import 'package:choice/provider/food_provider.dart';
 import 'package:choice/util/navigator_util.dart';
 import 'package:choice/util/timer_util.dart';
@@ -20,7 +22,8 @@ class _HomePageState extends State<HomePage> {
   bool _isBack = false;
   String _food = '';
   String _btnText = '今天吃什么';
-  TimerUtil _timerUtil = TimerUtil(mTotalTime: 60000, mInterval: 100);
+  TimerUtil _timerUtil = TimerUtil(mTotalTime: 60000, mInterval: 50);
+  String _backgroundPath = 'images/bg4.jpeg';
 
   @override
   void initState() {
@@ -31,38 +34,56 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        appBar: commonAppbar('开 饭 啦 ！'),
+        appBar: commonAppbar('开 饭 啦 ！',
+            actionWidget: PopupMenuButton(
+                itemBuilder: (context) => _actionItem(),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5))),
+                onSelected: (value) {
+                  if (value == 'value1') {
+                    _changeImage();
+                  }
+                },
+                child: Icon(
+                  Icons.more_horiz,
+                  color: Colors.black,
+                  size: 28,
+                ))),
         body: Consumer<FoodProvider>(
           builder: (context, foodProvider, _) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      _food,
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: WidgetStyle.getRandomColor()),
-                    )),
-                const SizedBox(
-                  height: 100,
-                ),
-                elevatedBtn(_btnText, Colors.orange,
-                    () => _doChoice(foodProvider.foods)),
-                const SizedBox(
-                  height: 50,
-                ),
-                Hero(
-                    tag: 'foodList',
-                    child: elevatedBtn('查看菜单', Colors.green,
-                        () => NavigatorUtil.push(context, AllPage()))),
-                const SizedBox(
-                  height: 150,
-                ),
-              ],
-            );
+            return Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(_backgroundPath), fit: BoxFit.cover)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          _food,
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: WidgetStyle.getRandomColor()),
+                        )),
+                    const SizedBox(
+                      height: 100,
+                    ),
+                    elevatedBtn(_btnText, Colors.orange,
+                        () => _doChoice(foodProvider.foods)),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Hero(
+                        tag: 'foodList',
+                        child: elevatedBtn('查看菜单', Colors.green,
+                            () => NavigatorUtil.push(context, AllPage()))),
+                    const SizedBox(
+                      height: 150,
+                    ),
+                  ],
+                ));
           },
         ),
         floatingActionButton: FloatingActionButton(
@@ -74,6 +95,25 @@ class _HomePageState extends State<HomePage> {
       ),
       onWillPop: _onBack,
     );
+  }
+
+  List<PopupMenuItem> _actionItem() {
+    return <PopupMenuItem<String>>[
+      PopupMenuItem(
+        value: 'value1',
+        child: Text(
+          '换个背景',
+          style: TextStyle(color: Colors.black, fontSize: 14),
+        ),
+      ),
+    ];
+  }
+
+  void _changeImage() async {
+    int index = Random().nextInt(15);
+    setState(() {
+      _backgroundPath = 'images/bg$index.jpeg';
+    });
   }
 
   void _doChoice(List<String> foods) {
@@ -100,7 +140,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _addFood(context) {
-    NavigatorUtil.push(context, AddPage());
+    // NavigatorUtil.push(context, AddPage());
+    NavigatorUtil.push(context, PaintTestPage());
   }
 
   //监听返回键，按两次退出程序
