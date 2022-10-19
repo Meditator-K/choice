@@ -74,7 +74,6 @@ class _AddPageState extends State<AddPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _foodController.dispose();
   }
