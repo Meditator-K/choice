@@ -7,6 +7,7 @@ import 'package:choice/page/add_page.dart';
 import 'package:choice/page/all_page.dart';
 import 'package:choice/page/paint_test_page.dart';
 import 'package:choice/page/red_green_light_page.dart';
+import 'package:choice/page/stopwatch_page.dart';
 import 'package:choice/page/tilt_list_page.dart';
 import 'package:choice/provider/food_provider.dart';
 import 'package:choice/util/navigator_util.dart';
@@ -148,8 +149,9 @@ class _HomePageState extends State<HomePage> {
 
   void _addFood(context) async {
     // NavigatorUtil.push(context, AddPage());
-    NavigatorUtil.push(context, RedGreenLightPage());
+    // NavigatorUtil.push(context, RedGreenLightPage());
     // NavigatorUtil.push(context, PaintTestPage());
+    NavigatorUtil.push(context, StopwatchPage());
     // String temp = await rootBundle.loadString('images/temp.txt');
     // debugPrint(temp);
     ///steam学习
